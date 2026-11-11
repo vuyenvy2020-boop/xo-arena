@@ -1071,3 +1071,345 @@ input.code {
   background: rgba(250, 204, 21, 0.18);
   box-shadow: 0 0 16px rgba(250, 204, 21, 0.5);
 }
+
+/* ============ GỌN LẠI THẺ HOME CHO VỪA MÀN HÌNH ============ */
+.scene-home .card {
+  padding: 20px 24px;
+  gap: 9px;
+}
+.scene-home .mascots { font-size: 38px; }
+.scene-home .logo { font-size: 42px; }
+.scene-home input { padding: 10px 14px; }
+.scene-home .btn { padding: 10px 18px; }
+
+.picker { padding: 10px; }
+.picker-head { margin-bottom: 8px; }
+.picker-grid { gap: 6px; }
+.pick {
+  aspect-ratio: auto;
+  height: 44px;
+  font-size: 24px;
+}
+
+/* ============ CHƠI VỚI MÁY ============ */
+.ai-box {
+  padding: 10px 12px;
+  text-align: left;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+}
+.ai-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.ai-title { font-size: 14px; font-weight: 600; }
+.ai-note { font-size: 11px; color: var(--muted); }
+.ai-levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.ai-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 4px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: 0.18s;
+}
+.ai-btn:hover { transform: translateY(-2px); }
+.ai-btn.easy:hover { background: rgba(52, 211, 153, 0.3); border-color: #34d399; }
+.ai-btn.normal:hover { background: rgba(250, 204, 21, 0.28); border-color: #facc15; }
+.ai-btn.hard:hover { background: rgba(239, 68, 68, 0.3); border-color: #ef4444; }
+
+/* Khi chơi với máy thì ẩn khung chat */
+.layout.vs-ai .chat { display: none; }
+
+/* ============ CHỌN QUÂN X HOẶC O ============ */
+.mark-pick {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  text-align: left;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+}
+.mark-label { display: flex; flex-direction: column; line-height: 1.25; }
+.mp-title { font-size: 13px; font-weight: 600; color: var(--muted); }
+.mp-note { font-size: 11px; color: var(--muted); opacity: 0.8; }
+.mark-btns { display: flex; gap: 8px; }
+.mark-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: 0.18s;
+}
+.mark-btn:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.16); }
+.mark-btn.X.on {
+  border-color: var(--x);
+  background: rgba(255, 92, 138, 0.2);
+  box-shadow: 0 0 16px rgba(255, 92, 138, 0.45);
+}
+.mark-btn.O.on {
+  border-color: var(--o);
+  background: rgba(77, 225, 255, 0.18);
+  box-shadow: 0 0 16px rgba(77, 225, 255, 0.4);
+}
+.mk { width: 20px; height: 20px; fill: none; stroke-width: 3.2; stroke-linecap: round; }
+.mk.x { stroke: var(--x); }
+.mk.o { stroke: var(--o); }
+
+/* ============ HOME: BỐ CỤC 2 CỘT, THOÁNG HƠN ============ */
+.scene-home .card.home-card {
+  width: min(900px, 100%);
+  padding: 30px 36px 34px;
+  gap: 22px;
+  text-align: left;
+}
+
+/* Đầu thẻ */
+.home-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 22px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+.scene-home .home-card .mascots { font-size: 46px; }
+.scene-home .home-card .logo { font-size: 46px; }
+
+/* Hai cột */
+.home-body { display: grid; grid-template-columns: 1fr 1fr; }
+.home-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 30px;
+}
+.home-col:first-child { padding-left: 0; }
+.home-col:last-child { padding-right: 0; }
+.home-col + .home-col { border-left: 1px solid var(--line); }
+
+/* Tiêu đề từng khu: số 1, số 2 */
+.sec-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+.sec-title span {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: #1b1340;
+  background: linear-gradient(135deg, #fde047, #f59e0b);
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
+}
+
+/* Các ô bên trong rộng rãi hơn */
+.scene-home .home-card input { padding: 13px 16px; }
+.scene-home .home-card .btn { padding: 13px 20px; }
+.scene-home .home-card .picker { padding: 14px; }
+.scene-home .home-card .picker-head { margin-bottom: 12px; }
+.scene-home .home-card .pick { height: 48px; font-size: 26px; }
+.scene-home .home-card .mark-pick { padding: 12px 14px; }
+.scene-home .home-card .ai-box { padding: 14px; }
+.scene-home .home-card .ai-btn { padding: 12px 4px; }
+
+/* Khung "Chơi với bạn bè" */
+.friend-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  text-align: left;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+}
+.friend-box .ai-head { margin-bottom: 0; }
+
+/* Màn hình nhỏ: xếp thành một cột */
+@media (max-width: 860px) {
+  .home-body { grid-template-columns: 1fr; gap: 26px; }
+  .home-col { padding: 0; }
+  .home-col + .home-col {
+    padding-top: 24px;
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+  .scene-home .card.home-card { padding: 24px 20px 28px; }
+}
+
+/* ============ HOME KHÔNG KHUNG: CÁC MỤC NẰM THẲNG TRÊN MÀN HÌNH ============ */
+
+/* 1. Bỏ khung kính của thẻ lớn */
+.scene-home .card.home-card {
+  width: min(940px, 100%);
+  padding: 8px 0;
+  gap: 32px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* 2. Quầng tối rất nhẹ phía sau để chữ dễ đọc trên nền cây cối */
+.scene-home .content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 60% 62% at 50% 50%,
+    rgba(8, 6, 32, 0.6),
+    transparent 72%
+  );
+}
+
+/* 3. Đầu trang: bỏ đường kẻ */
+.home-head {
+  padding-bottom: 0;
+  border-bottom: none;
+  gap: 10px;
+}
+.scene-home .home-card .logo { text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5); }
+
+/* 4. Hai cột cách xa nhau, không còn đường kẻ dọc */
+.home-body { column-gap: 72px; }
+.scene-home .home-col {
+  gap: 26px;
+  padding: 0;
+  border: none;
+}
+.home-col + .home-col { border-left: none; }
+
+/* 5. Bỏ khung của từng nhóm, chỉ giữ tiêu đề và nút */
+.scene-home .home-card .picker,
+.scene-home .home-card .mark-pick,
+.scene-home .home-card .ai-box,
+.scene-home .home-card .friend-box {
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+.scene-home .home-card .friend-box { gap: 14px; }
+.scene-home .home-card .picker-head,
+.scene-home .home-card .ai-head { margin-bottom: 12px; }
+.scene-home .home-card .friend-box .ai-head { margin-bottom: 0; }
+
+/* 6. Tiêu đề nhóm rõ ràng, chữ có bóng để nổi trên nền */
+.scene-home .home-card .picker-title,
+.scene-home .home-card .mp-title,
+.scene-home .home-card .ai-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+.scene-home .home-card .mp-note,
+.scene-home .home-card .ai-note,
+.scene-home .home-card .tagline,
+.scene-home .home-card .divider { color: #d9d2ff; }
+.scene-home .home-card .sec-title,
+.scene-home .home-card .picker-title,
+.scene-home .home-card .mp-title,
+.scene-home .home-card .mp-note,
+.scene-home .home-card .ai-title,
+.scene-home .home-card .ai-note,
+.scene-home .home-card .tagline,
+.scene-home .home-card .divider { text-shadow: 0 2px 10px rgba(0, 0, 0, 0.75); }
+
+/* 7. Nút và ô nhập: nền tối để nổi bật, khoảng cách thoáng */
+.scene-home .home-card input {
+  padding: 14px 18px;
+  background: rgba(22, 16, 76, 0.62);
+  border-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+}
+.scene-home .home-card .btn:not(.primary) {
+  background: rgba(22, 16, 76, 0.62);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.scene-home .home-card .btn:not(.primary):hover { background: rgba(255, 255, 255, 0.2); }
+.scene-home .home-card .btn { padding: 14px 22px; }
+.scene-home .home-card .join-row { gap: 14px; }
+
+/* Chọn nhân vật */
+.scene-home .home-card .picker-grid { gap: 12px; }
+.scene-home .home-card .pick {
+  height: 52px;
+  background: rgba(22, 16, 76, 0.62);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+.scene-home .home-card .pick:hover { background: rgba(255, 255, 255, 0.2); }
+.scene-home .home-card .pick.on {
+  background: rgba(250, 204, 21, 0.2);
+  border-color: #fde047;
+}
+
+/* Chọn quân */
+.scene-home .home-card .mark-btns { gap: 14px; }
+.scene-home .home-card .mark-btn {
+  padding: 9px 20px;
+  background: rgba(22, 16, 76, 0.62);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+.scene-home .home-card .mark-btn.X.on {
+  background: rgba(255, 92, 138, 0.22);
+  border-color: var(--x);
+}
+.scene-home .home-card .mark-btn.O.on {
+  background: rgba(77, 225, 255, 0.2);
+  border-color: var(--o);
+}
+
+/* Chơi với máy */
+.scene-home .home-card .ai-levels { gap: 14px; }
+.scene-home .home-card .ai-btn {
+  padding: 14px 4px;
+  background: rgba(22, 16, 76, 0.62);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.scene-home .home-card .ai-btn.easy:hover { background: rgba(52, 211, 153, 0.35); border-color: #34d399; }
+.scene-home .home-card .ai-btn.normal:hover { background: rgba(250, 204, 21, 0.3); border-color: #facc15; }
+.scene-home .home-card .ai-btn.hard:hover { background: rgba(239, 68, 68, 0.35); border-color: #ef4444; }
+
+/* 8. Màn hình nhỏ: xếp một cột */
+@media (max-width: 860px) {
+  .home-body { grid-template-columns: 1fr; row-gap: 34px; }
+  .scene-home .card.home-card { padding: 4px 6px; }
+}

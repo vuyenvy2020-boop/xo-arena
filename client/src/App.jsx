@@ -1,6 +1,8 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { socket } from "./socket";
 import AvatarPicker from "./AvatarPicker";
+import AIPlay from "./AIPlay";
+import MarkPicker from "./MarkPicker";
 import "./App.css";
 
 const SIZE = 15;
@@ -334,6 +336,8 @@ export default function App() {
   const [messages, setMessages] = useState([]);
   const [chatInput, setChatInput] = useState("");
   const [reactions, setReactions] = useState([]);
+  const [vsAI, setVsAI] = useState(false);
+  const [pickMark, setPickMark] = useState("X");
   const chatRef = useRef(null);
 
   // Các mảnh pháo giấy, tạo một lần
@@ -351,7 +355,8 @@ export default function App() {
 
   /* ----- Nhận sự kiện từ server ----- */
   useEffect(() => {
-    socket.on("gameStart", ({ players, turn, scores, timeLeft }) => {
+    socket.on("gameStart", ({ players, turn, scores, timeLeft, vsAI }) => {
+      setVsAI(!!vsAI);
       setPlayers(players);
       setBoard(emptyBoard());
       setTurn(turn);
@@ -442,7 +447,7 @@ export default function App() {
 
   const createRoom = () => {
     if (!name.trim()) return alert("Nhập tên trước nhé");
-        socket.emit("createRoom", { name: name.trim(), avatar }, ({ roomId, mark }) => {
+        socket.emit("createRoom", { name: name.trim(), avatar, mark: pickMark }, ({ roomId, mark }) => {
       setRoomId(roomId);
       setMyMark(mark);
       setScreen("waiting");
@@ -460,6 +465,14 @@ export default function App() {
         setMyMark(res.mark);
       }
     );
+  };
+
+    const startAI = (level) => {
+    if (!name.trim()) return alert("Nhập tên trước nhé");
+    socket.emit("createAIRoom", { name: name.trim(), avatar, level, mark: pickMark }, ({ roomId, mark }) => {
+      setRoomId(roomId);
+      setMyMark(mark);
+    });
   };
 
   const play = (row, col) => {
@@ -482,50 +495,79 @@ export default function App() {
 
   const sendReaction = (emoji) => socket.emit("reaction", { roomId, emoji });
 
-  /* ---------- Màn hình Home ---------- */
+    /* ---------- Màn hình Home ---------- */
   if (screen === "home")
     return (
       <Shell mode="home">
-        <div className="card">
-          <div className="mascots">
-            <span className="m1">{avatar}</span>
-            <span className="m-vs">VS</span>
-            <span className="m2">🐧</span>
-          </div>
-          <h1 className="logo">
-            <span className="lx">X</span>-<span className="lo">O</span> Arena
-          </h1>
-          <p className="tagline">Đấu caro trực tuyến, đủ 5 quân liên tiếp là thắng</p>
-          <input
-            placeholder="Nhập tên của bạn"
-            maxLength={16}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-                    <AvatarPicker value={avatar} onChange={setAvatar} />
-          <button className="btn primary" onClick={createRoom}>
-            Tạo phòng mới
-          </button>
-          <div className="divider">
-            <span>hoặc</span>
-          </div>
-          <div className="join-row">
-            <input
-              className="code"
-              placeholder="MÃ PHÒNG"
-              maxLength={5}
-              value={roomInput}
-              onChange={(e) => setRoomInput(e.target.value)}
-            />
-            <button className="btn" onClick={joinRoom}>
-              Vào phòng
-            </button>
+        <div className="card home-card">
+          {/* Đầu thẻ */}
+          <header className="home-head">
+            <div className="mascots">
+              <span className="m1">{avatar}</span>
+              <span className="m-vs">VS</span>
+              <span className="m2">🐧</span>
+            </div>
+            <h1 className="logo">
+              <span className="lx">X</span>-<span className="lo">O</span> Arena
+            </h1>
+            <p className="tagline">Đấu caro trực tuyến, đủ 5 quân liên tiếp là thắng</p>
+          </header>
+
+          <div className="home-body">
+            {/* Cột trái: thông tin của bạn */}
+            <section className="home-col">
+              <h3 className="sec-title">
+                <span>1</span> Thông tin của bạn
+              </h3>
+              <input
+                placeholder="Nhập tên của bạn"
+                maxLength={16}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <AvatarPicker value={avatar} onChange={setAvatar} />
+              <MarkPicker value={pickMark} onChange={setPickMark} />
+            </section>
+
+            {/* Cột phải: chọn cách chơi */}
+            <section className="home-col">
+              <h3 className="sec-title">
+                <span>2</span> Chọn cách chơi
+              </h3>
+
+              <div className="friend-box">
+                <div className="ai-head">
+                  <span className="ai-title">👥 Chơi với bạn bè</span>
+                  <span className="ai-note">2 người, 2 máy</span>
+                </div>
+                <button className="btn primary" onClick={createRoom}>
+                  Tạo phòng mới
+                </button>
+                <div className="divider">
+                  <span>hoặc</span>
+                </div>
+                <div className="join-row">
+                  <input
+                    className="code"
+                    placeholder="MÃ PHÒNG"
+                    maxLength={5}
+                    value={roomInput}
+                    onChange={(e) => setRoomInput(e.target.value)}
+                  />
+                  <button className="btn" onClick={joinRoom}>
+                    Vào phòng
+                  </button>
+                </div>
+              </div>
+
+              <AIPlay onStart={startAI} />
+            </section>
           </div>
         </div>
       </Shell>
     );
-
-  /* ---------- Phòng chờ ---------- */
+  
+    /* ---------- Phòng chờ ---------- */
   if (screen === "waiting")
     return (
       <Shell mode="wait">
@@ -604,7 +646,7 @@ export default function App() {
           </div>
         </header>
 
-        <div className="layout">
+        <div className={"layout" + (vsAI ? " vs-ai" : "")}>
           <section className="main">
             <div className="players">
               {["X", "O"].map((m, idx) => {
