@@ -796,3 +796,223 @@ input.code {
 @media (max-width: 480px) {
   .code-tiles span { width: 44px; height: 56px; font-size: 30px; }
 }
+
+
+/* ============ CHỦ ĐỀ BẦU TRỜI ĐÊM: CÂY CỐI VÀ CON VẬT ============ */
+
+/* Nền tối hơn cho đúng cảm giác ban đêm */
+:root {
+  --bg1: #080c2b;
+  --bg2: #1a1450;
+  --bg3: #0b2a4d;
+  --popup-bg: #241a5a;
+}
+
+/* Màn hình chơi: dịu bớt trang trí để dễ nhìn bàn cờ */
+.night.game { opacity: 0.85; }
+
+/* Đồi */
+.hills {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 22vh;
+  min-height: 130px;
+}
+
+/* Cây thông */
+.tree {
+  position: absolute;
+  bottom: 0;
+  width: auto;
+  aspect-ratio: 100 / 160;
+  transform-origin: 50% 100%;
+  animation: treesway 7s ease-in-out infinite alternate;
+}
+.tree.p1 { left: 1%; height: 38vh; color: #17604f; }
+.tree.p2 { left: 5%; height: 26vh; color: #1d7260; animation-delay: -2s; }
+.tree.p3 { right: 20%; height: 24vh; color: #17604f; animation-delay: -4s; }
+.tree.p4 { right: -1%; height: 34vh; color: #1d7260; animation-delay: -1s; }
+@keyframes treesway {
+  from { transform: rotate(-1.2deg); }
+  to { transform: rotate(1.4deg); }
+}
+
+/* Cây tròn và cú mèo */
+.owltree {
+  position: absolute;
+  right: 4%;
+  bottom: 0;
+  height: 42vh;
+  width: auto;
+  aspect-ratio: 200 / 260;
+  transform-origin: 50% 100%;
+  animation: treesway 8s ease-in-out infinite alternate;
+}
+.lid {
+  transform-box: fill-box;
+  transform-origin: center top;
+  animation: blink 5s infinite;
+}
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(0); }
+  95% { transform: scaleY(1); }
+}
+
+/* Mèo đen */
+.cat {
+  position: absolute;
+  left: 14%;
+  bottom: 6vh;
+  height: 17vh;
+  width: auto;
+  aspect-ratio: 160 / 150;
+}
+.cat .eye { filter: drop-shadow(0 0 4px #fde047); }
+.cat .tail {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+  animation: wag 2.4s ease-in-out infinite alternate;
+}
+@keyframes wag {
+  from { transform: rotate(-10deg); }
+  to { transform: rotate(14deg); }
+}
+
+/* Đom đóm */
+.firefly {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e6ff7a;
+  box-shadow: 0 0 10px 3px rgba(230, 255, 122, 0.7);
+  opacity: 0;
+  animation: drift 7s ease-in-out infinite;
+}
+@keyframes drift {
+  0% { transform: translate(0, 0); opacity: 0.1; }
+  25% { opacity: 1; }
+  50% { transform: translate(34px, -26px); opacity: 0.5; }
+  75% { transform: translate(-16px, -44px); opacity: 1; }
+  100% { transform: translate(0, 0); opacity: 0.1; }
+}
+
+/* Dơi bay ngang */
+.bat {
+  position: absolute;
+  left: 0;
+  font-size: 26px;
+  opacity: 0.85;
+  animation: batfly 20s linear infinite;
+}
+@keyframes batfly {
+  0% { transform: translate(-10vw, 0); }
+  25% { transform: translate(20vw, -30px); }
+  50% { transform: translate(55vw, 12px); }
+  75% { transform: translate(85vw, -26px); }
+  100% { transform: translate(115vw, 0); }
+}
+
+/* Sao băng */
+.shoot {
+  position: absolute;
+  top: 12%;
+  left: 72%;
+  width: 120px;
+  height: 2px;
+  opacity: 0;
+  background: linear-gradient(90deg, #fff, transparent);
+  transform: rotate(-30deg);
+  animation: shoot 8s ease-in infinite;
+}
+@keyframes shoot {
+  0% { opacity: 0; transform: translate(0, 0) rotate(-30deg); }
+  2% { opacity: 1; }
+  10% { opacity: 0; transform: translate(-320px, 185px) rotate(-30deg); }
+  100% { opacity: 0; }
+}
+
+/* Home: hai con vật mascot */
+.mascots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  font-size: 48px;
+  line-height: 1;
+}
+.mascots span { display: inline-block; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4)); }
+.m1 { animation: hop 1.6s ease-in-out infinite; }
+.m2 { animation: hop 1.6s ease-in-out 0.8s infinite; }
+.m-vs {
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--muted);
+}
+@keyframes hop {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-12px) rotate(-4deg); }
+}
+
+/* Avatar là con vật */
+.avatar { font-size: 24px; }
+.wait-avatar { font-size: 26px; }
+.player.active .avatar { animation: hop 1s ease-in-out infinite; }
+
+/* Nhãn VS giữa hai người chơi */
+.players { align-items: center; gap: 8px; }
+.vs-badge {
+  flex-shrink: 0;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: #1b1340;
+  background: linear-gradient(135deg, #fde047, #f59e0b);
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
+}
+
+/* Thanh trạng thái dạng viên thuốc */
+.status {
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  min-height: 0;
+}
+.status:empty { display: none; }
+.status.mine {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(236, 72, 153, 0.5));
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 22px rgba(139, 92, 246, 0.55);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  50% { transform: scale(1.05); }
+}
+
+/* Khung bàn cờ phát sáng, nền đậm hơn để dễ nhìn trên nền có cây cối */
+.board {
+  background: rgba(20, 14, 70, 0.6);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.55), 0 0 46px rgba(139, 92, 246, 0.4),
+    0 20px 60px rgba(0, 0, 0, 0.4);
+}
+.chat { background: rgba(20, 14, 70, 0.6); }
+
+/* Màn hình nhỏ: bớt con vật cho khỏi chật */
+@media (max-width: 1300px) {
+  .night.game .cat,
+  .night.game .owltree { display: none; }
+}
+@media (max-width: 700px) {
+  .cat,
+  .owltree,
+  .tree.p2,
+  .tree.p3 { display: none; }
+  .mascots { font-size: 40px; }
+}
