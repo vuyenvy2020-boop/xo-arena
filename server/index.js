@@ -11,6 +11,11 @@ const io = new Server(server, { cors: { origin: "*" } });
 const SIZE = 15;
 const TURN_TIME = 30; // số giây mỗi lượt
 const EMOJIS = ["👍", "😂", "😮", "😡", "🔥", "👏"];
+const AVATARS = [
+  "🦊", "🐧", "🐱", "🐶", "🐼", "🐰",
+  "🐸", "🦉", "🐯", "🐨", "🦄", "🐙",
+];
+const cleanAvatar = (a, fallback) => (AVATARS.includes(a) ? a : fallback);
 const rooms = {};
 
 const newBoard = () =>
@@ -57,10 +62,10 @@ io.on("connection", (socket) => {
   console.log("Có người kết nối:", socket.id);
 
   // Tạo phòng
-  socket.on("createRoom", ({ name }, cb) => {
+  socket.on("createRoom", ({ name, avatar }, cb) => {
     const roomId = Math.random().toString(36).slice(2, 7).toUpperCase();
     rooms[roomId] = {
-      players: [{ id: socket.id, name, mark: "X" }],
+      players: [{ id: socket.id, name, mark: "X", avatar: cleanAvatar(avatar, "🦊") }],
       board: newBoard(),
       turn: "X",
       moves: 0,
@@ -73,11 +78,11 @@ io.on("connection", (socket) => {
   });
 
   // Vào phòng
-  socket.on("joinRoom", ({ roomId, name }, cb) => {
+  socket.on("joinRoom", ({ roomId, name, avatar }, cb) => {
     const room = rooms[roomId];
     if (!room) return cb({ error: "Phòng không tồn tại" });
     if (room.players.length >= 2) return cb({ error: "Phòng đã đầy" });
-    room.players.push({ id: socket.id, name, mark: "O" });
+    room.players.push({ id: socket.id, name, mark: "O", avatar: cleanAvatar(avatar, "🐧") });
     socket.join(roomId);
     cb({ roomId, mark: "O" });
     io.to(roomId).emit("gameStart", {

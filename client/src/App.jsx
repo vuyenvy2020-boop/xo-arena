@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { socket } from "./socket";
+import AvatarPicker from "./AvatarPicker";
 import "./App.css";
 
 const SIZE = 15;
@@ -51,8 +52,8 @@ function Mark({ type }) {
 }
 
 /* ---------- Avatar con vật ---------- */
-function Avatar({ mark }) {
-  return <div className={"avatar " + mark}>{ANIMAL[mark]}</div>;
+function Avatar({ mark, emoji }) {
+  return <div className={"avatar " + mark}>{emoji || ANIMAL[mark]}</div>;
 }
 
 /* ---------- Cây thông ---------- */
@@ -302,6 +303,20 @@ function Shell({ children, mode = "home" }) {
 export default function App() {
   const [screen, setScreen] = useState("home"); // home | waiting | playing
   const [name, setName] = useState("");
+    const [avatar, setAvatar] = useState(() => {
+    try {
+      return localStorage.getItem("xo-avatar") || "🦊";
+    } catch {
+      return "🦊";
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("xo-avatar", avatar);
+    } catch {
+      /* bỏ qua nếu trình duyệt chặn */
+    }
+  }, [avatar]);
   const [roomInput, setRoomInput] = useState("");
   const [roomId, setRoomId] = useState("");
   const [myMark, setMyMark] = useState(null);
@@ -427,7 +442,7 @@ export default function App() {
 
   const createRoom = () => {
     if (!name.trim()) return alert("Nhập tên trước nhé");
-    socket.emit("createRoom", { name: name.trim() }, ({ roomId, mark }) => {
+        socket.emit("createRoom", { name: name.trim(), avatar }, ({ roomId, mark }) => {
       setRoomId(roomId);
       setMyMark(mark);
       setScreen("waiting");
@@ -438,7 +453,7 @@ export default function App() {
     if (!name.trim()) return alert("Nhập tên trước nhé");
     socket.emit(
       "joinRoom",
-      { roomId: roomInput.trim().toUpperCase(), name: name.trim() },
+            { roomId: roomInput.trim().toUpperCase(), name: name.trim(), avatar },
       (res) => {
         if (res.error) return alert(res.error);
         setRoomId(res.roomId);
@@ -473,7 +488,7 @@ export default function App() {
       <Shell mode="home">
         <div className="card">
           <div className="mascots">
-            <span className="m1">🦊</span>
+            <span className="m1">{avatar}</span>
             <span className="m-vs">VS</span>
             <span className="m2">🐧</span>
           </div>
@@ -487,6 +502,7 @@ export default function App() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+                    <AvatarPicker value={avatar} onChange={setAvatar} />
           <button className="btn primary" onClick={createRoom}>
             Tạo phòng mới
           </button>
@@ -532,7 +548,7 @@ export default function App() {
 
           <div className="slots">
             <div className="slot ready">
-              <div className={"wait-avatar " + myMark}>{ANIMAL[myMark]}</div>
+              <div className={"wait-avatar " + myMark}>{avatar}</div>
               <b>{name}</b>
               <small>Sẵn sàng</small>
             </div>
@@ -599,7 +615,7 @@ export default function App() {
                     <div
                       className={"player " + m + (turn === m && !result ? " active" : "")}
                     >
-                      <Avatar mark={m} />
+                      <Avatar mark={m} emoji={p?.avatar} />
                       <div className="p-info">
                         <b>{p?.name || "..."}</b>
                         <div className="p-mark">

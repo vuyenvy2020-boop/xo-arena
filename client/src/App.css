@@ -1016,3 +1016,58 @@ input.code {
   .tree.p3 { display: none; }
   .mascots { font-size: 40px; }
 }
+
+/* ============ MỤC CHỌN NHÂN VẬT ============ */
+.picker {
+  padding: 12px;
+  text-align: left;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--line);
+}
+.picker-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.picker-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.picker-now {
+  font-size: 30px;
+  line-height: 1;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+  animation: hop 1.6s ease-in-out infinite;
+}
+.picker-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+.pick {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 26px;
+  line-height: 1;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: 0.18s;
+}
+.pick:hover {
+  transform: translateY(-3px) scale(1.08);
+  background: rgba(255, 255, 255, 0.16);
+}
+.pick:focus-visible { outline: 2px solid #fff; }
+.pick.on {
+  transform: scale(1.08);
+  border-color: #fde047;
+  background: rgba(250, 204, 21, 0.18);
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.5);
+}
